@@ -54,7 +54,7 @@ export class Prepayment extends BaseComponent {
       // start original
       const requestDatas: PaymentRequestSchemaDTO = {
         paymentMethod: {
-          type: 'PREPAYMENT',
+          type: this.paymentMethod,
         },
         paymentOutcome: PaymentOutcome.AUTHORIZED,
       };
@@ -73,7 +73,7 @@ export class Prepayment extends BaseComponent {
       
       const requestData: PaymentRequestSchemaDTO = {
         paymentMethod: {
-          type: 'PREPAYMENT',
+          type: this.paymentMethod,
         },
         paymentOutcome: PaymentOutcome.AUTHORIZED,
       };
