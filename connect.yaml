@@ -15,7 +15,7 @@ deployAs:
     configuration:
       standardConfiguration:
         - key: NOVALNET_PREPAYMENT_TEST_MODE
-          description: Novalnet unique identifier.
+          description: Novalnet unique identifier test description.
           required: true          
   - name: processor
     applicationType: service
