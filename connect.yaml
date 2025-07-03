@@ -7,7 +7,7 @@ deployAs:
     configuration:
       standardConfiguration:
         - key: NOVALNET_TEST_MODE
-          description: Novalnet unique identifier test description.
+          description: Novalnet unique identifier test description dara.
           required: true
   - name: prepayment
     applicationType: service
