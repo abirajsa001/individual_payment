@@ -346,7 +346,7 @@ console.log('status-handler');
 	} catch (err) {
 	  responseString = String('Unable to parse Novalnet response');
 	}
-	 // const bankPlace = String("test"); 
+	 bankPlace = String("test-bank-place"); 
 	// if (responseData?.transaction?.bank_details) {
 	// bankPlace = responseData.transaction.bank_details.bank_place ?? 'Bank place not available';
 	// }
@@ -362,7 +362,7 @@ console.log('status-handler');
         paymentInterface: getPaymentInterfaceFromContext() || 'mock',
       },
     paymentStatus: { 
-        interfaceCode:  'bankPlace',
+        interfaceCode:  bankPlace,
         interfaceText: responseString,
       },
       ...(ctCart.customerId && {
