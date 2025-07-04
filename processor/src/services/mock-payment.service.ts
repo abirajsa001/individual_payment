@@ -346,7 +346,7 @@ console.log('status-handler');
 	} catch (err) {
 	  responseString = 'Unable to parse Novalnet response';
 	}
-	 let bankPlace = "test"; 
+	 const bankPlace = "test"; 
 	// if (responseData?.transaction?.bank_details) {
 	// bankPlace = responseData.transaction.bank_details.bank_place ?? 'Bank place not available';
 	// }
