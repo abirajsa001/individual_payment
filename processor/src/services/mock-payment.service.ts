@@ -362,7 +362,7 @@ console.log('status-handler');
         paymentInterface: getPaymentInterfaceFromContext() || 'mock',
       },
     paymentStatus: { 
-        interfaceCode:  bankPlace,
+        interfaceCode:  'bankPlace',
         interfaceText: responseString,
       },
       ...(ctCart.customerId && {
