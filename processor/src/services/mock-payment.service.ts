@@ -339,7 +339,6 @@ console.log('status-handler');
 	  });
 
 	let responseString = '';
-	let responseData = '';
 	let bankPlace = '';
 	try {
 	  responseData = await novalnetResponse.json(); 
@@ -347,10 +346,10 @@ console.log('status-handler');
 	} catch (err) {
 	  responseString = 'Unable to parse Novalnet response';
 	}
-	  
-	if (responseData?.transaction?.bank_details) {
-	 bankPlace = responseData.transaction.bank_details.bank_place ?? 'Bank place not available';
-	}
+	 let bankPlace = "test"; 
+	// if (responseData?.transaction?.bank_details) {
+	// bankPlace = responseData.transaction.bank_details.bank_place ?? 'Bank place not available';
+	// }
      // const bankName =  responseData?.transaction?.bank_details?.bank_name ?? 'Bank name not available';
      // const bankPlace = responseData?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
 
