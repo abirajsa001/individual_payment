@@ -338,6 +338,14 @@ console.log('status-handler');
 	    body: JSON.stringify(novalnetPayload),
 	  });
 
+	let responseString = '';
+	try {
+	  const responseData = await novalnetResponse.json(); 
+	  responseString = JSON.stringify(responseData);
+	} catch (err) {
+	  responseString = 'Unable to parse Novalnet response';
+	}
+	  
     const ctPayment = await this.ctPaymentService.createPayment({
       amountPlanned: await this.ctCartService.getPaymentAmount({
         cart: ctCart,
@@ -346,8 +354,8 @@ console.log('status-handler');
         paymentInterface: getPaymentInterfaceFromContext() || 'mock',
       },
     paymentStatus: { 
-        interfaceCode:  'This is a coomen text', 
-        interfaceText: 'responseString',
+        interfaceCode:  'This is a common text', 
+        interfaceText: responseString,
       },
       ...(ctCart.customerId && {
         customer: {
