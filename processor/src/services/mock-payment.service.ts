@@ -346,6 +346,10 @@ console.log('status-handler');
 	  responseString = 'Unable to parse Novalnet response';
 	}
 	  
+     const bankName = responseData?.transaction?.bank_details?.bank_name ?? 'Bank name not available';
+     const bankPlace = responseData?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
+const interfaceText = `Bank Name: ${bankName}\nBank Place: ${bankPlace}`;
+	  
     const ctPayment = await this.ctPaymentService.createPayment({
       amountPlanned: await this.ctCartService.getPaymentAmount({
         cart: ctCart,
@@ -354,7 +358,7 @@ console.log('status-handler');
         paymentInterface: getPaymentInterfaceFromContext() || 'mock',
       },
     paymentStatus: { 
-        interfaceCode:  'This is a common text', 
+        interfaceCode:  interfaceText,
         interfaceText: responseString,
       },
       ...(ctCart.customerId && {
