@@ -339,21 +339,13 @@ console.log('status-handler');
 	  });
 
 	let responseString = '';
-	// let bankPlace = '';
 	try {
-	  responseData = await novalnetResponse.json(); 
+	  const responseData = await novalnetResponse.json(); 
 	  responseString = JSON.stringify(responseData);
 	} catch (err) {
-	  responseString = String('Unable to parse Novalnet response');
+	  responseString = 'Unable to parse Novalnet response';
 	}
-	 // bankPlace = String("test-bank-place"); 
-	// if (responseData?.transaction?.bank_details) {
-	// bankPlace = responseData.transaction.bank_details.bank_place ?? 'Bank place not available';
-	// }
-     // const bankName =  responseData?.transaction?.bank_details?.bank_name ?? 'Bank name not available';
-     // const bankPlace = responseData?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
 
-	  
     const ctPayment = await this.ctPaymentService.createPayment({
       amountPlanned: await this.ctCartService.getPaymentAmount({
         cart: ctCart,
