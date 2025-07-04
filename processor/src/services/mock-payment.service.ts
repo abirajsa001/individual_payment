@@ -339,8 +339,9 @@ console.log('status-handler');
 	  });
 
 	let responseString = '';
+	let responseData = '';
 	try {
-	  const responseData = await novalnetResponse.json(); 
+	  responseData = await novalnetResponse.json(); 
 	  responseString = JSON.stringify(responseData);
 	} catch (err) {
 	  responseString = 'Unable to parse Novalnet response';
