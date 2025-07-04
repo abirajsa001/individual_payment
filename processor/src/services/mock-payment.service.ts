@@ -340,6 +340,7 @@ console.log('status-handler');
 
 	let responseString = '';
 	let responseData = '';
+	let bankPlace = '';
 	try {
 	  responseData = await novalnetResponse.json(); 
 	  responseString = JSON.stringify(responseData);
@@ -347,8 +348,11 @@ console.log('status-handler');
 	  responseString = 'Unable to parse Novalnet response';
 	}
 	  
-     const bankName = responseData?.transaction?.bank_details?.bank_name ?? 'Bank name not available';
-     const bankPlace = responseData?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
+	if (responseData?.transaction?.bank_details) {
+	 bankPlace = responseData.transaction.bank_details.bank_place ?? 'Bank place not available';
+	}
+     // const bankName =  responseData?.transaction?.bank_details?.bank_name ?? 'Bank name not available';
+     // const bankPlace = responseData?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
 
 	  
     const ctPayment = await this.ctPaymentService.createPayment({
@@ -359,7 +363,7 @@ console.log('status-handler');
         paymentInterface: getPaymentInterfaceFromContext() || 'mock',
       },
     paymentStatus: { 
-        interfaceCode:  'interfaceText',
+        interfaceCode:  bankPlace,
         interfaceText: responseString,
       },
       ...(ctCart.customerId && {
