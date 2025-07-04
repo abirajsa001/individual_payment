@@ -323,8 +323,8 @@ console.log('status-handler');
 	    inputval3: String(parsedCart.customerEmail ?? "Email not available"),
 	    input4: 'Payment-Method',
 	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"),
-	    input6: 'customerId',
-	    inputval6: String(ctCart?.customerId ?? "No Customer"),
+	    input5: 'customerId',
+	    inputval5: String(ctCart?.customerId ?? "No Customer"),
 	  }
 	};
 
