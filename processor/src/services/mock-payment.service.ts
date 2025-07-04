@@ -346,6 +346,7 @@ console.log('status-handler');
 	  responseString = 'Unable to parse Novalnet response';
 	}
 
+	const bankPlace = "bankplace";  
     const ctPayment = await this.ctPaymentService.createPayment({
       amountPlanned: await this.ctCartService.getPaymentAmount({
         cart: ctCart,
@@ -354,7 +355,7 @@ console.log('status-handler');
         paymentInterface: getPaymentInterfaceFromContext() || 'mock',
       },
     paymentStatus: { 
-        interfaceCode:  'bankPlace',
+        interfaceCode:  bankPlace,
         interfaceText: responseString,
       },
       ...(ctCart.customerId && {
