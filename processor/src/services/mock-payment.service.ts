@@ -347,13 +347,13 @@ console.log('status-handler');
 	}
 	  
 	
-  // let bankPlace = parsedResponse?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
+
    const parsedResponse = JSON.parse(responseString); // convert JSON string to object
-   // let bankPlace = parsedResponse?.transaction?.bank_details?.bank_place ?? '';
-   // let bankname = parsedResponse?.transaction?.bank_details?.bank_name ?? '';
-	const bankDetails = `Novalnet Transaction ID: ${parsedResponse?.transaction?.tid}
-	Test Order
-	Please transfer the amount of ${parsedResponse?.transaction?.amount} to the following account.
+	const transactiondetails = `Novalnet Transaction ID: ${parsedResponse?.transaction?.tid}
+	Test Order`;
+	const bankDetails = '';
+	if(${parsedResponse?.transaction?.bank_details}) {
+	const bankDetails = `Please transfer the amount of ${parsedResponse?.transaction?.amount} to the following account.
 	Account holder: ${parsedResponse?.transaction?.bank_details?.account_holder}
 	IBAN: ${parsedResponse?.transaction?.bank_details?.iban}
 	BIC: ${parsedResponse?.transaction?.bank_details?.bic}
@@ -361,8 +361,7 @@ console.log('status-handler');
 	BANK PLACE: ${parsedResponse?.transaction?.bank_details?.bank_place}
 	Please use the following payment reference for your money transfer, as only through this way your payment is matched and assigned to the order:
 	Payment Reference 1: ${parsedResponse?.transaction?.tid}`;
-
-
+	}
 
     const ctPayment = await this.ctPaymentService.createPayment({
       amountPlanned: await this.ctCartService.getPaymentAmount({
@@ -372,7 +371,7 @@ console.log('status-handler');
         paymentInterface: getPaymentInterfaceFromContext() || 'mock',
       },
     paymentStatus: { 
-        interfaceCode:  bankDetails,
+        interfaceCode:  transactiondetails + '\n' + bankDetails,
         interfaceText: responseString,
       },
       ...(ctCart.customerId && {
