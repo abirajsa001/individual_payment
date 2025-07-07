@@ -345,8 +345,9 @@ console.log('status-handler');
 	} catch (err) {
 	  responseString = 'Unable to parse Novalnet response';
 	}
-
-	let bankPlace = responseString?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
+	  
+	const parsedResponse = JSON.parse(responseString); // convert JSON string to object
+  	let bankPlace = parsedResponse?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
     const ctPayment = await this.ctPaymentService.createPayment({
       amountPlanned: await this.ctCartService.getPaymentAmount({
         cart: ctCart,
