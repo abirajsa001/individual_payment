@@ -348,19 +348,19 @@ console.log('status-handler');
 	  
 	
 
-   const parsedResponse = JSON.parse(responseString); // convert JSON string to object
+	const parsedResponse = JSON.parse(responseString); // convert JSON string to object
 	const transactiondetails = `Novalnet Transaction ID: ${parsedResponse?.transaction?.tid}
 	Test Order`;
-	const bankDetails = '';
-	if(${parsedResponse?.transaction?.bank_details}) {
-	const bankDetails = `Please transfer the amount of ${parsedResponse?.transaction?.amount} to the following account.
-	Account holder: ${parsedResponse?.transaction?.bank_details?.account_holder}
-	IBAN: ${parsedResponse?.transaction?.bank_details?.iban}
-	BIC: ${parsedResponse?.transaction?.bank_details?.bic}
-	BANK NAME: ${parsedResponse?.transaction?.bank_details?.bank_name}
-	BANK PLACE: ${parsedResponse?.transaction?.bank_details?.bank_place}
+	let bankDetails = ''; // Use `let` instead of `const` so we can reassign it
+	if (parsedResponse?.transaction?.bank_details) {
+	  bankDetails = `Please transfer the amount of ${parsedResponse?.transaction?.amount} to the following account.
+	Account holder: ${parsedResponse.transaction.bank_details.account_holder}
+	IBAN: ${parsedResponse.transaction.bank_details.iban}
+	BIC: ${parsedResponse.transaction.bank_details.bic}
+	BANK NAME: ${parsedResponse.transaction.bank_details.bank_name}
+	BANK PLACE: ${parsedResponse.transaction.bank_details.bank_place}
 	Please use the following payment reference for your money transfer, as only through this way your payment is matched and assigned to the order:
-	Payment Reference 1: ${parsedResponse?.transaction?.tid}`;
+	Payment Reference 1: ${parsedResponse.transaction.tid}`;
 	}
 
     const ctPayment = await this.ctPaymentService.createPayment({
