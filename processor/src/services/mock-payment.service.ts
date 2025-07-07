@@ -346,11 +346,12 @@ console.log('status-handler');
 	  responseString = 'Unable to parse Novalnet response';
 	}
 	  
-	const parsedResponse = JSON.parse(responseString); // convert JSON string to object
+	
   	// let bankPlace = parsedResponse?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
+	  const parsedResponse = JSON.parse(responseString); // convert JSON string to object
 	  let bankPlace = parsedResponse?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
 	let bankname = parsedResponse?.transaction?.bank_details?.bank_name ?? 'Bank name not available';
-	let bankDetails = `Bank Place: ${bankPlace}\nBank Name: ${bankname}`;
+	let bankDetails = `Bank Place: ${bankPlace}<br>Bank Name: ${bankname}`;
 
 
     const ctPayment = await this.ctPaymentService.createPayment({
