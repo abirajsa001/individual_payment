@@ -96,7 +96,7 @@ export class MockPaymentService extends AbstractPaymentService {
             return {
               name: 'Mock Payment API',
               status: 'DOWN',
-              message: 'The mock paymentAPI is down for some reason. Please check the logs for more details.',
+              message: 'The mock payment API is down for some reason. Please check the logs for more details.',
               details: {
                 // TODO do not expose the error
                 error: e,
@@ -347,7 +347,12 @@ console.log('status-handler');
 	}
 	  
 	const parsedResponse = JSON.parse(responseString); // convert JSON string to object
-  	let bankPlace = parsedResponse?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
+  	// let bankPlace = parsedResponse?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
+	  let bankPlace = parsedResponse?.transaction?.bank_details?.bank_place ?? 'Bank place not available';
+	let bankname = parsedResponse?.transaction?.bank_details?.bank_name ?? 'Bank name not available';
+	let bankDetails = `Bank Place: ${bankPlace}\nBank Name: ${bankname}`;
+
+
     const ctPayment = await this.ctPaymentService.createPayment({
       amountPlanned: await this.ctCartService.getPaymentAmount({
         cart: ctCart,
@@ -356,7 +361,7 @@ console.log('status-handler');
         paymentInterface: getPaymentInterfaceFromContext() || 'mock',
       },
     paymentStatus: { 
-        interfaceCode:  bankPlace,
+        interfaceCode:  bankDetails,
         interfaceText: responseString,
       },
       ...(ctCart.customerId && {
