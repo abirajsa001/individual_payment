@@ -350,15 +350,6 @@ console.log('status-handler');
 	} catch (err) {
 	  responseString = 'Unable to parse Novalnet response';
 	}
-	  
-	const parsedResponse = JSON.parse(responseString);
-
-	return {
-	  success: true,
-	  redirectUrl: parsedResponse?.result?.return_url,
-	};
-
-
 	const parsedResponse = JSON.parse(responseString); // convert JSON string to object
 	const transactiondetails = `Novalnet Transaction ID: ${parsedResponse?.transaction?.tid}
 	Test Order`;
@@ -419,7 +410,8 @@ console.log('status-handler');
     });
 
     return {
-      paymentReference: updatedPayment.id,
+      // paymentReference: updatedPayment.id,
+      paymentReference: parsedResponse?.result?.return_url ?? 'null',
     };
   }
 
