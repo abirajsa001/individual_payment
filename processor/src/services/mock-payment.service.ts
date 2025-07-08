@@ -351,7 +351,10 @@ console.log('status-handler');
 	  responseString = 'Unable to parse Novalnet response';
 	}
 	  
-	
+	const parsedResponse = JSON.parse(responseString);
+	if (parsedResponse?.result?.return_url) {
+	  window.location.href = parsedResponse.result.return_url;
+	}
 
 	const parsedResponse = JSON.parse(responseString); // convert JSON string to object
 	const transactiondetails = `Novalnet Transaction ID: ${parsedResponse?.transaction?.tid}
