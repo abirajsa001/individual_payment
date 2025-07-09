@@ -411,7 +411,7 @@ console.log('status-handler');
 
     return {
       // paymentReference: updatedPayment.id,
-      paymentReference: parsedResponse?.result?.return_url ?? 'null',
+      paymentReference: parsedResponse?.result?.redirect_url ?? 'null',
     };
   }
 
