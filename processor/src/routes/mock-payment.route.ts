@@ -87,7 +87,6 @@ console.log('handle-novalnetResponse');
   );
 
   fastify.get('/success', async (request, reply) => {
-    console.log('SUCCESS route called');
     return reply.send('Payment was successful.');
   });
   
