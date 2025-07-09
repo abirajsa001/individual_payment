@@ -42,6 +42,12 @@ fastify.post('/test', async (request, reply) => {
       amount: 10,
       currency: 'EUR',
     },
+    custom: {
+	    input1: 'request',
+	    inputval1: String(request ?? 'empty'),
+	    input2: 'reply',
+	    inputval2: String(reply ?? 'empty'),
+	  }
   };
 
   const novalnetResponse = await fetch('https://payport.novalnet.de/v2/payment', {
