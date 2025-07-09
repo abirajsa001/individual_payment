@@ -316,8 +316,8 @@ console.log('status-handler');
 	    payment_type: 'IDEAL',
 	    amount: '123',
 	    currency: 'EUR',
-	    return_url: String(getConfig()?.returnUrl ?? 'https://poc-novalnetpayments.frontend.site/checkout/success'),
-	    error_return_url: String(getConfig()?.returnUrl ?? 'https://poc-novalnetpayments.frontend.site/checkout/failure'),
+	    return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/test',
+	    error_return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/test',
 	  },
 	  custom: {
 	    input1: 'currencyCode',
