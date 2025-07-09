@@ -1,27 +1,10 @@
 {
   "name": "individual-payment",
   "version": "1.0.0",
-  "description": "Custom Novalnet payment integration",
-  "target": "payment",
-  "endpoint": "https://individual-payment.vercel.app",
+  "description": "Custom Novalnet payment connector",
+  "endpoint": "https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app",
   "builders": {
     "paymentProvider": "1.0.0"
   },
-  "routes": [
-    {
-      "path": "/payment-handler",
-      "method": "POST",
-      "secured": false
-    },
-    {
-      "path": "/success",
-      "method": "GET",
-      "secured": false
-    },
-    {
-      "path": "/failure",
-      "method": "GET",
-      "secured": false
-    }
-  ]
+  "target": "payment"
 }
