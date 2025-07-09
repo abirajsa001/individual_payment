@@ -87,17 +87,11 @@ console.log('handle-novalnetResponse');
   );
 
 fastify.get('/success', async (request, reply) => {
-  // Optional: process query params like status_code, tid, etc.
-  const { status_code, tid } = request.query;
   console.log('sucessssssss');
-  return reply.send(`Payment successful. Status: ${status_code}, Transaction ID: ${tid}`);
 });
 	
 fastify.get('/failure', async (request, reply) => {
-  // Optional: process query params like status_code, tid, etc.
-  const { status_code, tid } = request.query;
   console.log('failureeeeeeee');
-  return reply.send(`Payment failure. Status: ${status_code}, Transaction ID: ${tid}`);
 });
 	  
 };
