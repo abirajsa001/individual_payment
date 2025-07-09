@@ -7,7 +7,7 @@ import { join } from 'path';
 import { config } from '../config/config';
 import { requestContextPlugin } from '../libs/fastify/context/context';
 import { errorHandler } from '../libs/fastify/error-handler';
-
+import { paymentRoutes } from '../routes/mock-payment.route';
 /**
  * Setup Fastify server instance
  * @returns
@@ -37,6 +37,8 @@ export const setupFastify = async () => {
 
   // Register context plugin
   await server.register(requestContextPlugin);
+
+  await server.register(paymentRoutes);
 
   await server.register(autoLoad, {
     dir: join(__dirname, 'plugins'),
