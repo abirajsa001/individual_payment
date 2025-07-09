@@ -70,7 +70,8 @@ export class Ideal extends BaseComponent {
       });
       console.log('responses-dataa');
     console.log(responses);
-      
+      console.log('processorUrl');
+     console.log(this.processorUrl);
       
       const requestData: PaymentRequestSchemaDTO = {
         paymentMethod: {
