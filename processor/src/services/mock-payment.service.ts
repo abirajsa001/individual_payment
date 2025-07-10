@@ -316,8 +316,8 @@ console.log('status-handler');
 	    payment_type: 'IDEAL',
 	    amount: '123',
 	    currency: 'EUR',
-  	    return_url: 'https://individual-payment.vercel.app/success',
-            error_return_url: 'https://individual-payment.vercel.app/failure',
+	    return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/success',
+	    error_return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/failure',
 	  },
 	  custom: {
 	    input1: 'currencyCode',
