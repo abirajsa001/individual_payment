@@ -1,8 +1,8 @@
 {
   "name": "individual-payment",
   "version": "1.0.0",
-  "description": "Custom Novalnet payment connector",
-  "endpoint": "https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app",
+  "description": "This is a custom payment integration",
+  "endpoint": "https://individual-payment.vercel.app/payment-handler",
   "builders": {
     "paymentProvider": "1.0.0"
   },
