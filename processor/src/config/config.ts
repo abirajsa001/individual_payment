@@ -24,7 +24,7 @@ export const config = {
   novalnetWebhookURL: process.env.NOVALNET_WEBHOOK_URL || '',
 
   merchanturl: process.env.MERCHANT_RETURN_URL || 'no',
-  serviceurl: process.env.CONNECT_SERVICE_URL || 'no'
+  serviceurl: process.env.CONNECT_SERVICE_URL || 'no',
 
   
   novalnetPrepaymentTestMode: process.env.NOVALNET_PREPAYMENT_TEST_MODE || 'processor-config',
