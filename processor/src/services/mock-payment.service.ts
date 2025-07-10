@@ -316,8 +316,8 @@ console.log('status-handler');
 	    payment_type: 'IDEAL',
 	    amount: '123',
 	    currency: 'EUR',
-	    return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/success',
-	    error_return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/failure',
+	    return_url: `${String(process.env.CONNECT_SERVICE_URL)}/success`,
+	    error_return_url: `${String(process.env.CONNECT_SERVICE_URL)}/failure`,
 	  },
 	  custom: {
 	    input1: 'currencyCode',
@@ -330,6 +330,8 @@ console.log('status-handler');
 	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"),
 	    input5: 'customerId',
 	    inputval5: String(ctCart?.customerId ?? "No Customer"),
+            input6: 'service_url',
+            inputval6: String(process.env.CONNECT_SERVICE_URL),			  
 	  }
 	};
 
