@@ -317,7 +317,7 @@ console.log('status-handler');
 	    amount: '123',
 	    currency: 'EUR',
 	    return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/success',
-	    error_return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/failure',
+	    error_return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/test',
 	  },
 	  custom: {
 	    input1: 'currencyCode',
