@@ -327,11 +327,7 @@ console.log('status-handler');
 	    input3: 'customerEmail',
 	    inputval3: String(parsedCart.customerEmail ?? "Email not available"),
 	    input4: 'Payment-Method',
-	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"),
-	    input5: 'merchanturl',
-	    inputval5: String(getConfig()?.url ?? 'empty'),  
-	    input6: 'serviceurl',
-	    inputval6: String(getConfig()?.returnurl ?? 'empty'),  
+	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"), 
 	  }
 	};
 
