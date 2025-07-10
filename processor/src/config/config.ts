@@ -25,11 +25,11 @@ export const config = {
 
   merchanturl: process.env.MERCHANT_RETURN_URL || 'no',
   serviceurl: process.env.CONNECT_SERVICE_URL || 'no',
-
+  url: process.env.URL || 'no',
   
   novalnetPrepaymentTestMode: process.env.NOVALNET_PREPAYMENT_TEST_MODE || 'processor-config',
   // Payment Providers config
-  returnUrl: process.env.RETURN_URL,
+  returnurl: process.env.RETURN_URL,
 
   // TODO review these configurations
   // supportedUIElements: convertStringCommaSeparatedValuesToArray(process.env.SUPPORTED_UI_ELEMENTS),
