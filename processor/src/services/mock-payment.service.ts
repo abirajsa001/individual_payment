@@ -457,11 +457,9 @@ console.log('status-handler');
 	  },
 	  transaction: {
 	    test_mode: '1',
-	    payment_type: 'IDEAL',
+	    payment_type: 'PREPAYMENT',
 	    amount: '123',
 	    currency: 'EUR',
-	    return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/success',
-	    error_return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/test',
 	  },
 	  custom: {
 	    input1: 'currencyCode',
@@ -552,8 +550,8 @@ console.log('status-handler');
     });
 
     return {
-      // paymentReference: updatedPayment.id,
-      paymentReference: parsedResponse?.result?.redirect_url ?? 'null',
+       paymentReference: updatedPayment.id,
+      // paymentReference: parsedResponse?.result?.redirect_url ?? 'null',
     };
   }
 	
