@@ -289,23 +289,23 @@ console.log('status-handler');
       // 🔐 Call Novalnet API server-side (no CORS issue)
 	const novalnetPayload = {
 	  merchant: {
-	    signature: String(getConfig()?.novalnetPrivateKey ?? '7ibc7ob5|tuJEH3gNbeWJfIHah||nbobljbnmdli0poys|doU3HJVoym7MQ44qf7cpn7pc'),
-	    tariff: String(getConfig()?.novalnetTariff ?? '10004'),
+	    signature: String(getConfig()?.novalnetPrivateKey),
+	    tariff: String(getConfig()?.novalnetTariff),
 	  },
 	  customer: {
 	    billing: {
-	      city: String(billingAddress?.city ?? 'demo'),
-	      country_code: String(billingAddress?.country ?? 'US'),
-	      house_no: String(billingAddress?.streetName ?? '10'),
-	      street: String(billingAddress?.streetName ?? 'teststreet'),
-	      zip: String(billingAddress?.postalCode ?? '12345'),
+	      city: String(billingAddress?.city),
+	      country_code: String(billingAddress?.country),
+	      house_no: String(billingAddress?.streetName),
+	      street: String(billingAddress?.streetName),
+	      zip: String(billingAddress?.postalCode),
 	    },
 	    shipping: {
-	      city: String(deliveryAddress?.city ?? 'demoshipping'),
-	      country_code: String(deliveryAddress?.country ?? 'US'),
-	      house_no: String(deliveryAddress?.streetName ?? '11'),
-	      street: String(deliveryAddress?.streetName ?? 'testshippingstreet'),
-	      zip: String(deliveryAddress?.postalCode ?? '12345'),
+	      city: String(deliveryAddress?.city),
+	      country_code: String(deliveryAddress?.country),
+	      house_no: String(deliveryAddress?.streetName),
+	      street: String(deliveryAddress?.streetName),
+	      zip: String(deliveryAddress?.postalCode),
 	    },
 	    first_name: 'Max',
 	    last_name: 'Mustermann',
