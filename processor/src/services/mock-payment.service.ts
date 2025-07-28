@@ -30,6 +30,7 @@ import { getCartIdFromContext, getPaymentInterfaceFromContext } from '../libs/fa
 import { randomUUID } from 'crypto';
 import { TransactionDraftDTO, TransactionResponseDTO } from '../dtos/operations/transaction.dto';
 import { log } from '../libs/logger';
+import * as Context from '../libs/fastify/context/context';
 
 export class MockPaymentService extends AbstractPaymentService {
   constructor(opts: MockPaymentServiceOptions) {
@@ -312,6 +313,8 @@ public async createPaymentt({ data }: { data: any }) {
     const deliveryAddress = await this.ctcc(ctCart);
     const billingAddress  = await this.ctbb(ctCart);
     const parsedCart = typeof ctCart === 'string' ? JSON.parse(ctCart) : ctCart;
+    const processorURL = Context.getProcessorUrlFromContext();
+	  
       // 🔐 Call Novalnet API server-side (no CORS issue)
 	const novalnetPayload = {
 	  merchant: {
@@ -339,11 +342,11 @@ public async createPaymentt({ data }: { data: any }) {
 	  },
 	  transaction: {
 	    test_mode: '1',
-	    payment_type: 'PAYPAL',
+	    payment_type: 'IDEAL',
 	    amount: '123',
 	    currency: 'EUR',
-	    return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/success',
-	    error_return_url: 'https://service-gxj31ubdem0d5a3yfzvyd735.europe-west1.gcp.sandbox.commercetools.app/payments',
+	    return_url: `${processorURL}/success`,
+	    error_return_url: `${processorURL}/payments`,
 	  },
 	  custom: {
 	    input1: 'currencyCode',
@@ -352,8 +355,8 @@ public async createPaymentt({ data }: { data: any }) {
 	    inputval2: String(parsedCart?.taxedPrice?.totalGross?.centAmount ?? 'empty'),
 	    input3: 'customerEmail',
 	    inputval3: String(parsedCart.customerEmail ?? "Email not available"),
-	    input4: 'Payment-Method',
-	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"), 
+	    input4: 'processorurl',
+	    inputval4: String(processorURL ?? "processorURL not available"), 
 	  }
 	};
 
