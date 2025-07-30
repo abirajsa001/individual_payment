@@ -79,7 +79,7 @@ export class Invoice extends BaseComponent {
       console.log('requestData');
     console.log(requestData);
      
-      const response = await fetch(this.processorUrl + "/payments", {
+      const response = await fetch(this.processorUrl + "/payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
