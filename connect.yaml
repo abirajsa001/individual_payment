@@ -41,6 +41,9 @@ deployAs:
         - key: NOVALNET_INVOICE_DUE_DATE
           description: Novalnet unique identifier test description data.
           required: true
+        - key: NOVALNET_INVOICE_PAYMENT_ACTION
+          description: Novalnet unique identifier test description data.
+          required: true
         - key: NOVALNET_INVOICE_PAYMENT_ACTION_MINIMUM_AMOUNT
           description: Novalnet unique identifier test description data.
           required: true
@@ -48,6 +51,12 @@ deployAs:
           description: Novalnet unique identifier test description data.
           required: true
         - key: NOVALNET_PREPAYMENT_DUE_DATE
+          description: Novalnet unique identifier test description data.
+          required: true
+        - key: NOVALNET_PREPAYMENT_PAYMENT_ACTION
+          description: Novalnet unique identifier test description data.
+          required: true
+        - key: NOVALNET_PREPAYMENT_PAYMENT_ACTION_MINIMUM_AMOUNT
           description: Novalnet unique identifier test description data.
           required: true
       securedConfiguration:
