@@ -35,7 +35,7 @@ deployAs:
         - key: NOVALNET_WEBHOOK_URL
           description: Novalnet unique identifier.
           required: true
-        - key: NOVALNET_INVOICE - TEST_MODE
+        - key: NOVALNET_INVOICE-TEST_MODE
           description: Novalnet unique identifier test description data.
           required: true
         - key: NOVALNET_INVOICE_DUE_DATE
