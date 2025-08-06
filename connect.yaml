@@ -23,9 +23,6 @@ deployAs:
           description: "commercetools API URL"
           required: true
           default: "https://api.europe-west1.gcp.commercetools.com"
-        - key: NOVALNET_PAYMENT_ACTION
-          description: Novalnet unique identifier test description data.
-          required: true
         - key: NOVALNET_PRIVATE_KEY
           description: Novalnet unique identifier.
           required: true
@@ -38,7 +35,7 @@ deployAs:
         - key: NOVALNET_WEBHOOK_URL
           description: Novalnet unique identifier.
           required: true
-        - key: NOVALNET_INVOICE_TEST_MODE
+        - key: NOVALNET_INVOICE - TEST_MODE
           description: Novalnet unique identifier test description data.
           required: true
         - key: NOVALNET_INVOICE_DUE_DATE
