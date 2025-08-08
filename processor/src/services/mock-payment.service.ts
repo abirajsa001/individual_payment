@@ -496,10 +496,10 @@ public async createPaymentt({ data }: { data: any }) {
 	  };
 	}
 	  
-	const type = String(request.data?.paymentMethod?.type ?? 'INVOICE');
-	const configKey = `novalnet_${type}_TestMode`;
-	const config = getConfig();
-	const testMode = String(config?.[configKey] ?? '10004');
+const type = String(request.data?.paymentMethod?.type ?? 'INVOICE');
+const config = getConfig();
+
+const { testMode, paymentAction } = getNovalnetConfigValues(type, config);
 	  
 	const novalnetPayload = {
 	  merchant: {
@@ -534,7 +534,7 @@ public async createPaymentt({ data }: { data: any }) {
 	    input3: 'dynamicTestMode',
 	    inputval3: testMode ?? '10004',
 	    input4: 'dynamicConfig',
-	    inputval4:  configKey ?? '10004',
+	    inputval4:  paymentAction ?? '10004',
 		input5: 'Test-Mode-prepayment',
 		inputval5: String(getConfig()?.novalnet_PREPAYMENT_TestMode ?? '10004'),
 		input6: 'Test-Mode-invoice',
@@ -623,7 +623,41 @@ public async createPaymentt({ data }: { data: any }) {
       // paymentReference: parsedResponse?.result?.redirect_url ?? 'null',
     };
   }
-	
+
+
+	type NovalnetConfig = {
+  testMode: string;
+  paymentAction: string;
+};
+
+function getNovalnetConfigValues(type: string, config: Record<string, any>): NovalnetConfig {
+  const upperType = type.toUpperCase();
+
+  switch (upperType) {
+    case 'CREDITCARD':
+      return {
+        testMode: String(config?.novalnet_CREDITCARD_TestMode ?? '10004'),
+        paymentAction: String(config?.novalnet_CREDITCARD_payment_action ?? '0'),
+      };
+    case 'PREPAYMENT':
+      return {
+        testMode: String(config?.novalnet_PREPAYMENT_TestMode ?? '10004'),
+        paymentAction: String(config?.novalnet_PREPAYMENT_payment_action ?? '0'),
+      };
+    case 'INVOICE':
+      return {
+        testMode: String(config?.novalnet_INVOICE_TestMode ?? '10004'),
+        paymentAction: String(config?.novalnet_INVOICE_payment_action ?? '0'),
+      };
+    default:
+      return {
+        testMode: '10004',
+        paymentAction: '0',
+      };
+  }
+}
+
+
   public async handleTransaction(transactionDraft: TransactionDraftDTO): Promise<TransactionResponseDTO> {
     const TRANSACTION_AUTHORIZATION_TYPE: TransactionType = 'Authorization';
     const TRANSACTION_STATE_SUCCESS: TransactionState = 'Success';
