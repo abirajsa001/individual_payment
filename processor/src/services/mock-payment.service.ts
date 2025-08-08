@@ -496,9 +496,9 @@ public async createPaymentt({ data }: { data: any }) {
 	  };
 	}
 	  
-	const type = request.data?.paymentMethod?.type ?? 'INVOICE';
+	const type = String(request.data?.paymentMethod?.type ?? 'INVOICE');
 	const configKey = `novalnet_${type}_TestMode`;
-	const config = getConfig(); 
+	const config = getConfig();
 	const testMode = String(config?.[configKey] ?? '10004');
 	  
 	const novalnetPayload = {
