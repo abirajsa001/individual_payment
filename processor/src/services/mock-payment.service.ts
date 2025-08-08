@@ -496,9 +496,10 @@ public async createPaymentt({ data }: { data: any }) {
 	  };
 	}
 	  
-	const type = request?.data?.paymentMethod?.type ?? 'INVOICE';
+	const type = request.data?.paymentMethod?.type ?? 'INVOICE';
 	const configKey = `novalnet_${type}_TestMode`;
-	const testMode = String(getConfig()?.[configKey] ?? '10004');
+	const config = getConfig(); 
+	const testMode = String(config?.[configKey] ?? '10004');
 	  
 	const novalnetPayload = {
 	  merchant: {
@@ -531,9 +532,9 @@ public async createPaymentt({ data }: { data: any }) {
 	    input2: 'transaction amount',
 	    inputval2: String(parsedCart?.taxedPrice?.totalGross?.centAmount ?? 'empty'),
 	    input3: 'dynamicTestMode',
-	    inputval3: String(testMode ?? "Test mode not available"), 
+	    inputval3:  String(testMode ?? '10004'),
 	    input4: 'dynamicConfig',
-	    inputval4: String(configKey ?? "Config not available"), 
+	    inputval4:  String(configKey ?? '10004'),
 		input5: 'Test-Mode-prepayment',
 		inputval5: String(getConfig()?.novalnet_PREPAYMENT_TestMode ?? '10004'),
 		input6: 'Test-Mode-invoice',
