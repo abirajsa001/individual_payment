@@ -29,7 +29,8 @@ export const config = {
   serviceurl: process.env.CONNECT_SERVICE_URL || 'no',
   url: process.env.URL || 'no',
   
-  novalnetPrepaymentTestMode: process.env.NOVALNET_PREPAYMENT_TEST_MODE || 'processor-config',
+  novalnet_PREPAYMENT_TestMode: process.env.NOVALNET_PREPAYMENT_TEST_MODE || 'processor-config',
+  novalnet_INVOICE_TestMode: process.env.NOVALNET_INVOICE_TEST_MODE || 'processor-config-invoice',
   // Payment Providers config
   returnurl: process.env.RETURN_URL,
 
