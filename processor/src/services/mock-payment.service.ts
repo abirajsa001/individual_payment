@@ -518,7 +518,7 @@ public async createPaymentt({ data }: { data: any }) {
 	    },
 	    first_name: 'Max',
 	    last_name: 'Mustermann',
-	    email: 'abiraj_s@novalnetsolutions.com',
+	    email: String(parsedCart.customerEmail ?? "Email not available"),
 	  },
 	transaction,
 	  custom: {
@@ -526,14 +526,17 @@ public async createPaymentt({ data }: { data: any }) {
 	    inputval1: String(parsedCart?.taxedPrice?.totalGross?.currencyCode ?? 'empty'),
 	    input2: 'transaction amount',
 	    inputval2: String(parsedCart?.taxedPrice?.totalGross?.centAmount ?? 'empty'),
-	    input3: 'customerEmail',
-	    inputval3: String(parsedCart.customerEmail ?? "Email not available"),
+	    input3: 'dynamicTestMode',
+	    inputval3: String(getConfig()?.[`novalnet_${request.data.paymentMethod.type}_TestMode`] ?? '10004'),
 	    input4: 'Payment-Method',
 	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"), 
-            input5: 'Test-Mode',
-            inputval5: String(getConfig()?.novalnetPrepaymentTestMode ?? '10004'),		  
+		input5: 'Test-Mode-prepayment',
+		inputval5: String(getConfig()?.novalnet_PREPAYMENT_TestMode ?? '10004'),
+		input6: 'Test-Mode-invoice',
+		inputval6: String(getConfig()?.novalnet_INVOICE_TestMode ?? '10004'),
 	  }
 	};
+const testMode = 
 
 	  const novalnetResponse = await fetch('https://payport.novalnet.de/v2/payment', {
 	    method: 'POST',
