@@ -32,6 +32,26 @@ import { TransactionDraftDTO, TransactionResponseDTO } from '../dtos/operations/
 import { log } from '../libs/logger';
 import * as Context from '../libs/fastify/context/context';
 
+type NovalnetConfig = {
+  testMode: string;
+  paymentAction: string;
+};
+
+function getNovalnetConfigValues(
+  type: string,
+  config: Record<string, any>
+): NovalnetConfig {
+  const upperType = type.toUpperCase();
+
+  const testModeKey = `novalnet_${upperType}_TestMode`;
+  const paymentActionKey = `novalnet_${upperType}_payment_action`;
+
+  return {
+    testMode: String(config?.[testModeKey] ?? '10004'),
+    paymentAction: String(config?.[paymentActionKey] ?? '0'),
+  };
+}
+
 export class MockPaymentService extends AbstractPaymentService {
   constructor(opts: MockPaymentServiceOptions) {
     super(opts.ctCartService, opts.ctPaymentService);
@@ -459,6 +479,10 @@ public async createPaymentt({ data }: { data: any }) {
    * @returns Promise with mocking data containing operation status and PSP reference
    */
   public async createPayments(request: CreatePaymentRequest): Promise<PaymentResponseSchemaDTO> {
+  const type = String(request.data?.paymentMethod?.type ?? 'INVOICE');
+  const config = getConfig();
+  const { testMode, paymentAction } = getNovalnetConfigValues(type, config);
+
     const ctCart = await this.ctCartService.getCart({
       id: getCartIdFromContext(),
     });
@@ -495,9 +519,7 @@ public async createPaymentt({ data }: { data: any }) {
 		unique_id: String(request.data.paymentMethod.uniqueId ?? ''),
 	  };
 	}
-	  const type = String(request.data?.paymentMethod?.type ?? 'INVOICE');
-const config = getConfig(); // Not async
-const { testMode, paymentAction } = getNovalnetConfigValues(type, config);
+
 
 	const novalnetPayload = {
 	  merchant: {
@@ -620,33 +642,6 @@ const { testMode, paymentAction } = getNovalnetConfigValues(type, config);
     };
   }
 
-type PaymentType = 'CREDITCARD' | 'PREPAYMENT' | 'INVOICE';
-
-interface NovalnetConfig {
-  testMode: string;
-  paymentAction: string;
-}
-
-function getNovalnetConfigValues(
-  type: string,
-  config: Record<string, unknown>
-): NovalnetConfig {
-  const upperType = type.toUpperCase() as PaymentType;
-
-  const testModeKey = `novalnet_${upperType}_TestMode`;
-  const paymentActionKey = `novalnet_${upperType}_payment_action`;
-
-  return {
-    testMode: String(config?.[testModeKey] ?? '10004'),
-    paymentAction: String(config?.[paymentActionKey] ?? '0'),
-  };
-}
-
-
-
-
-
-	
   public async handleTransaction(transactionDraft: TransactionDraftDTO): Promise<TransactionResponseDTO> {
     const TRANSACTION_AUTHORIZATION_TYPE: TransactionType = 'Authorization';
     const TRANSACTION_STATE_SUCCESS: TransactionState = 'Success';
