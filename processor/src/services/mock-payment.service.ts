@@ -296,75 +296,6 @@ public async createPaymentt({ data }: { data: any }) {
     body: JSON.stringify(novalnetPayload),
   });
   const responseData = await novalnetResponse.json();
-
-let cart: Cart | undefined;
-const cartId = getCartIdFromContext();
-
-try {
-  if (cartId) {
-	cart = await this.ctCartService.getCart({ id: cartId });
-  }
-} catch (e) {
-  this.logger.warn('Cart by ID failed:', e);
-}
-
-if (!cart) {
-  const contextCart = getRequestContext().cart;
-
-  ctCart = await this.ctCartService.getCartByCustomerOrAnonymous({
-	customerId: contextCart?.customerId,
-	anonymousId: contextCart?.anonymousId,
-  });
-
-  if (!cart) {
-	this.logger.error('Could not find cart via ID or customer/anonymous fallback.');
-	throw new Error('Cart not found');
-  }
-}
-
-const ctPayment = await this.ctPaymentService.createPayment({
-  amountPlanned: await this.ctCartService.getPaymentAmount({
-	cart: ctCart,
-  }),
-  paymentMethodInfo: {
-	paymentInterface: getPaymentInterfaceFromContext() || 'mock',
-  },
-paymentStatus: { 
-	interfaceCode:  'interfaceCode',
-	interfaceText: 'interfaceText',
-  },
-  ...(ctCart.customerId && {
-	customer: {
-	  typeId: 'customer',
-	  id: ctCart.customerId,
-	},
-  }),
-  ...(!ctCart.customerId &&
-	ctCart.anonymousId && {
-	  anonymousId: ctCart.anonymousId,
-	}),
-});
-
-await this.ctCartService.addPayment({
-  resource: {
-	id: ctCart.id,
-	version: ctCart.version,
-  },
-  paymentId: ctPayment.id,
-});
-
-const pspReference = randomUUID().toString();
-const updatedPayment = await this.ctPaymentService.updatePayment({
-  id: ctPayment.id,
-  pspReference: pspReference,
-  transaction: {
-	type: 'Authorization',
-	amount: ctPayment.amountPlanned,
-	interactionId: pspReference,
-	state: 'SUCCESS',
-  },
-});
-	
   return {
     success: parsedData ?? 'empty-response',
     novalnetResponse: responseData,
@@ -596,7 +527,7 @@ const updatedPayment = await this.ctPaymentService.updatePayment({
 	    input2: 'transaction amount',
 	    inputval2: String(parsedCart?.taxedPrice?.totalGross?.centAmount ?? 'empty'),
 	    input3: 'dynamicTestMode',
-	    inputval3: String(getConfig()?.[`novalnet_${request.data.paymentMethod.type}_TestMode`] ?? '10004'),
+	    inputval3: String(request.data.paymentMethod.type ?? "Payment-Method not available"), 
 	    input4: 'Payment-Method',
 	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"), 
 		input5: 'Test-Mode-prepayment',
