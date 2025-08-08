@@ -499,7 +499,7 @@ public async createPaymentt({ data }: { data: any }) {
 const type = String(request.data?.paymentMethod?.type ?? 'INVOICE');
 const config = getConfig();
 
-const { testMode, paymentAction } = getNovalnetConfigValues(type, config);
+const { testMode, paymentAction } = await this.getNovalnetConfigValues(type, config);
 	  
 	const novalnetPayload = {
 	  merchant: {
@@ -624,21 +624,14 @@ const { testMode, paymentAction } = getNovalnetConfigValues(type, config);
     };
   }
 
-
-	type NovalnetConfig = {
+type NovalnetConfig = {
   testMode: string;
   paymentAction: string;
 };
 
-function getNovalnetConfigValues(type: string, config: Record<string, any>): NovalnetConfig {
+public async  getNovalnetConfigValues(type: string, config: Record<string, any>): NovalnetConfig {
   const upperType = type.toUpperCase();
-
   switch (upperType) {
-    case 'CREDITCARD':
-      return {
-        testMode: String(config?.novalnet_CREDITCARD_TestMode ?? '10004'),
-        paymentAction: String(config?.novalnet_CREDITCARD_payment_action ?? '0'),
-      };
     case 'PREPAYMENT':
       return {
         testMode: String(config?.novalnet_PREPAYMENT_TestMode ?? '10004'),
