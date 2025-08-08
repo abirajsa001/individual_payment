@@ -496,10 +496,7 @@ public async createPaymentt({ data }: { data: any }) {
 	  };
 	}
 	  
-const type = String(request.data?.paymentMethod?.type ?? 'INVOICE');
-const config = getConfig();
 
-const { testMode, paymentAction } = await this.getNovalnetConfigValues(type, config);
 	  
 	const novalnetPayload = {
 	  merchant: {
