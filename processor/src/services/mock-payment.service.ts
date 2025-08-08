@@ -619,6 +619,33 @@ const { testMode, paymentAction } = getNovalnetConfigValues(type, config);
       // paymentReference: parsedResponse?.result?.redirect_url ?? 'null',
     };
   }
+
+type PaymentType = 'CREDITCARD' | 'PREPAYMENT' | 'INVOICE';
+
+interface NovalnetConfig {
+  testMode: string;
+  paymentAction: string;
+}
+
+function getNovalnetConfigValues(
+  type: string,
+  config: Record<string, unknown>
+): NovalnetConfig {
+  const upperType = type.toUpperCase() as PaymentType;
+
+  const testModeKey = `novalnet_${upperType}_TestMode`;
+  const paymentActionKey = `novalnet_${upperType}_payment_action`;
+
+  return {
+    testMode: String(config?.[testModeKey] ?? '10004'),
+    paymentAction: String(config?.[paymentActionKey] ?? '0'),
+  };
+}
+
+
+
+
+
 	
   public async handleTransaction(transactionDraft: TransactionDraftDTO): Promise<TransactionResponseDTO> {
     const TRANSACTION_AUTHORIZATION_TYPE: TransactionType = 'Authorization';
