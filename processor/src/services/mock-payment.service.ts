@@ -485,18 +485,16 @@ public async createPaymentt({ data }: { data: any }) {
 	}
 
 	if (String(request.data.paymentMethod.type).toUpperCase() == 'CREDITCARD') {
-	  if(request.data.paymentMethod.doRedirect) {
-		  const processorURL = Context.getProcessorUrlFromContext();	
-		  transaction.return_url = `${processorURL}/success`;
-	          transaction.error_return_url = `${processorURL}/payments`;  
-	  }	
+	  // if(String(request.data.paymentMethod.doRedirect) == '1') {
+		 //  const processorURL = Context.getProcessorUrlFromContext();	
+		 //  transaction.return_url = `${processorURL}/success`;
+	  //         transaction.error_return_url = `${processorURL}/payments`;  
+	  // }	
 	  transaction.payment_data = {
 		pan_hash: String(request.data.paymentMethod.panHash ?? ''),
 		unique_id: String(request.data.paymentMethod.uniqueId ?? ''),
 	  };
 	}
-	  
-
 	  
 	const novalnetPayload = {
 	  merchant: {
@@ -520,7 +518,7 @@ public async createPaymentt({ data }: { data: any }) {
 	    },
 	    first_name: 'Max',
 	    last_name: 'Mustermann',
-	    email: String(parsedCart.customerEmail ?? "Email not available"),
+	    email: 'abiraj_s@novalnetsolutions.com',
 	  },
 	transaction,
 	  custom: {
@@ -528,17 +526,15 @@ public async createPaymentt({ data }: { data: any }) {
 	    inputval1: String(parsedCart?.taxedPrice?.totalGross?.currencyCode ?? 'empty'),
 	    input2: 'transaction amount',
 	    inputval2: String(parsedCart?.taxedPrice?.totalGross?.centAmount ?? 'empty'),
-	    input3: 'dynamicTestMode',
-	    inputval3: String(getConfig()?.novalnet_PREPAYMENT_TestMode ?? '10004'),
-	    input4: 'dynamicConfig',
-	    inputval4:  String(getConfig()?.novalnet_PREPAYMENT_TestMode ?? '10004'),
-		input5: 'Test-Mode-prepayment',
-		inputval5: String(getConfig()?.novalnet_PREPAYMENT_TestMode ?? '10004'),
-		input6: 'Test-Mode-invoice',
-		inputval6: String(getConfig()?.novalnet_INVOICE_TestMode ?? '10004'),
+	    input3: 'customerEmail',
+	    inputval3: String(parsedCart.customerEmail ?? "Email not available"),
+	    input4: 'Payment-Method',
+	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"), 
+		input5: 'TestMOde',
+	    inputval5: String(getConfig()?.novalnet_INVOICE_TestMode ?? '10004'), 
 	  }
 	};
-	  
+
 	  const novalnetResponse = await fetch('https://payport.novalnet.de/v2/payment', {
 	    method: 'POST',
 	    headers: {
@@ -620,34 +616,7 @@ public async createPaymentt({ data }: { data: any }) {
       // paymentReference: parsedResponse?.result?.redirect_url ?? 'null',
     };
   }
-
-type NovalnetConfig = {
-  testMode: string;
-  paymentAction: string;
-};
-
-public async  getNovalnetConfigValues(type: string, config: Record<string, any>): NovalnetConfig {
-  const upperType = type.toUpperCase();
-  switch (upperType) {
-    case 'PREPAYMENT':
-      return {
-        testMode: String(config?.novalnet_PREPAYMENT_TestMode ?? '10004'),
-        paymentAction: String(config?.novalnet_PREPAYMENT_payment_action ?? '0'),
-      };
-    case 'INVOICE':
-      return {
-        testMode: String(config?.novalnet_INVOICE_TestMode ?? '10004'),
-        paymentAction: String(config?.novalnet_INVOICE_payment_action ?? '0'),
-      };
-    default:
-      return {
-        testMode: '10004',
-        paymentAction: '0',
-      };
-  }
-}
-
-
+	
   public async handleTransaction(transactionDraft: TransactionDraftDTO): Promise<TransactionResponseDTO> {
     const TRANSACTION_AUTHORIZATION_TYPE: TransactionType = 'Authorization';
     const TRANSACTION_STATE_SUCCESS: TransactionState = 'Success';
