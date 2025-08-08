@@ -536,8 +536,7 @@ public async createPaymentt({ data }: { data: any }) {
 		inputval6: String(getConfig()?.novalnet_INVOICE_TestMode ?? '10004'),
 	  }
 	};
-const testMode = 
-
+	  
 	  const novalnetResponse = await fetch('https://payport.novalnet.de/v2/payment', {
 	    method: 'POST',
 	    headers: {
