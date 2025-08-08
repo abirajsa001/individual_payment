@@ -495,7 +495,10 @@ public async createPaymentt({ data }: { data: any }) {
 		unique_id: String(request.data.paymentMethod.uniqueId ?? ''),
 	  };
 	}
-	  
+	  const type = String(request.data?.paymentMethod?.type ?? 'INVOICE');
+const config = getConfig(); // Not async
+const { testMode, paymentAction } = getNovalnetConfigValues(type, config);
+
 	const novalnetPayload = {
 	  merchant: {
 	    signature: String(getConfig()?.novalnetPrivateKey ?? '7ibc7ob5|tuJEH3gNbeWJfIHah||nbobljbnmdli0poys|doU3HJVoym7MQ44qf7cpn7pc'),
@@ -530,8 +533,8 @@ public async createPaymentt({ data }: { data: any }) {
 	    inputval3: String(parsedCart.customerEmail ?? "Email not available"),
 	    input4: 'Payment-Method',
 	    inputval4: String(request.data.paymentMethod.type ?? "Payment-Method not available"), 
-		input5: 'TestMOde',
-	    inputval5: String(getConfig()?.novalnet_INVOICE_TestMode ?? '10004'), 
+		input5: 'TestMode',
+	    inputval5: String(testMode ?? '10004'), 
 	  }
 	};
 
