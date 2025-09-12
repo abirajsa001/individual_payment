@@ -88,11 +88,13 @@ export class Prepayment extends BaseComponent {
     }
   }
 
-private async _fetchPaymentData() {
+private async _getTemplate() {
   const requestData: PaymentRequestSchemaDTO = {
     paymentMethod: { type: "PREPAYMENT" },
     paymentOutcome: PaymentOutcome.AUTHORIZED,
   };
+
+  console.log("requestData", requestData);
 
   const response = await fetch(this.processorUrl + "/v13", {
     method: "POST",
@@ -100,13 +102,11 @@ private async _fetchPaymentData() {
       "Content-Type": "application/json",
       "X-Session-Id": this.sessionId,
     },
-    body: JSON.stringify(requestData),
+    body: 'test',
   });
 
-  return response.json();
-}
+  console.log("responseData-newdata", response);
 
-private _getTemplate() {
   return this.showPayButton
     ? `
       <div class="${styles.wrapper}">
