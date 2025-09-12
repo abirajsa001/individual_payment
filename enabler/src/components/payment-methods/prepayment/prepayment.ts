@@ -88,36 +88,33 @@ export class Prepayment extends BaseComponent {
     }
   }
 
-  private async _getTemplate() {
+private async _fetchPaymentData() {
+  const requestData: PaymentRequestSchemaDTO = {
+    paymentMethod: { type: "PREPAYMENT" },
+    paymentOutcome: PaymentOutcome.AUTHORIZED,
+  };
 
-   const requestData: PaymentRequestSchemaDTO = {
-      paymentMethod: {
-        type: "PREPAYMENT",
-      },
-      paymentOutcome: PaymentOutcome.AUTHORIZED,
-    };
-  console.log('requestData');
-  console.log(requestData);
+  const response = await fetch(this.processorUrl + "/v13", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Session-Id": this.sessionId,
+    },
+    body: JSON.stringify(requestData),
+  });
 
-   	const response = await fetch(baseOptions.processorUrl + "/v13", {
-	method: "POST",
-	headers: {
-	  "Content-Type": "application/json",
-	  "X-Session-Id": this.sessionId,
-	},
-	body: JSON.stringify(requestData),
-	});
-	console.log('responseData-newdata');
-	console.log(response);
-	console.log(response);
-   
-    return this.showPayButton
-      ? `
-    <div class="${styles.wrapper}">
-      <p>Pay easily with Prepayment and transfer the shopping amount within the specified date.</p>
-      <button class="${buttonStyles.button} ${buttonStyles.fullWidth} ${styles.submitButton}" id="purchaseOrderForm-paymentButton">Pay</button>
-    </div>
+  return response.json();
+}
+
+private _getTemplate() {
+  return this.showPayButton
+    ? `
+      <div class="${styles.wrapper}">
+        <p>Pay easily with Prepayment and transfer the shopping amount within the specified date.</p>
+        <button class="${buttonStyles.button} ${buttonStyles.fullWidth} ${styles.submitButton}" id="purchaseOrderForm-paymentButton">Pay</button>
+      </div>
     `
-      : "";
-  }
+    : "";
+}
+
 }
