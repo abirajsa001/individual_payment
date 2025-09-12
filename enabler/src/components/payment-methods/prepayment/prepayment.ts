@@ -99,7 +99,7 @@ export class Prepayment extends BaseComponent {
   console.log('requestData');
   console.log(requestData);
 
-   	const response = await fetch(this.processorUrl + "/v13", {
+   	const response = await fetch(baseOptions.processorUrl + "/v13", {
 	method: "POST",
 	headers: {
 	  "Content-Type": "application/json",
