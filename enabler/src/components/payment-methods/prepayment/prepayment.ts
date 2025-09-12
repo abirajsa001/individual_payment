@@ -88,7 +88,7 @@ export class Prepayment extends BaseComponent {
     }
   }
 
-  private _getTemplate() {
+  private async _getTemplate() {
 
    const requestData: PaymentRequestSchemaDTO = {
       paymentMethod: {
