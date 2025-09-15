@@ -30,42 +30,50 @@ export class Prepayment extends BaseComponent {
     this.showPayButton = componentOptions?.showPayButton ?? false;
   }
 
-  mount(selector: string) {
-    document
-      .querySelector(selector)
-      .insertAdjacentHTML("afterbegin", this._getTemplate());
+async mount(selector: string) {
+  // render template first
+  document
+    .querySelector(selector)
+    .insertAdjacentHTML("afterbegin", this._getTemplate());
 
-      // optional: load data from processor
-      try {
-        const response = await fetch(this.processorUrl + "/v13", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Session-Id": this.sessionId,
-          },
-          body: JSON.stringify({ init: true }),
-        });
-        const data = await response.json();
-        console.log("preload data", data);
-    
-        // You can store it in a property for later use in submit()
-        this.preloadData = data;
-      } catch (e) {
-        console.error("Error during preload", e);
-      }
+  // preload request
+  const requestData: PaymentRequestSchemaDTO = {
+    paymentMethod: { type: "PREPAYMENT" },
+    paymentOutcome: PaymentOutcome.AUTHORIZED,
+  };
 
-  console.log("responseData-newdata", response);
+  console.log("requestData", requestData);
 
-   
-    if (this.showPayButton) {
-      document
-        .querySelector("#purchaseOrderForm-paymentButton")
-        .addEventListener("click", (e) => {
-          e.preventDefault();
-          this.submit();
-        });
-    }
+  try {
+    const response = await fetch(this.processorUrl + "/v13", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Session-Id": this.sessionId,
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    const data = await response.json();
+    console.log("responseData-newdata", data);
+
+    // you can store preload data for submit()
+    this.preloadData = data;
+  } catch (err) {
+    console.error("Error while preloading payment data", err);
   }
+
+  // bind button handler
+  if (this.showPayButton) {
+    document
+      .querySelector("#purchaseOrderForm-paymentButton")
+      .addEventListener("click", (e) => {
+        e.preventDefault();
+        this.submit();
+      });
+  }
+}
+
 
   async submit() {
     // here we would call the SDK to submit the payment
@@ -111,8 +119,6 @@ export class Prepayment extends BaseComponent {
   }
 
 private  _getTemplate() {
-
-
   return this.showPayButton
     ? `
       <div class="${styles.wrapper}">
