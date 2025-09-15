@@ -30,13 +30,27 @@ export class Prepayment extends BaseComponent {
     this.showPayButton = componentOptions?.showPayButton ?? false;
   }
 
-async mount(selector: string) {
+mount(selector: string): void {
   // render template first
   document
     .querySelector(selector)
     .insertAdjacentHTML("afterbegin", this._getTemplate());
 
-  // preload request
+  // preload request in background
+  this._preload();
+
+  // bind button handler
+  if (this.showPayButton) {
+    document
+      .querySelector("#purchaseOrderForm-paymentButton")
+      .addEventListener("click", (e) => {
+        e.preventDefault();
+        this.submit();
+      });
+  }
+}
+
+private async _preload(): Promise<void> {
   const requestData: PaymentRequestSchemaDTO = {
     paymentMethod: { type: "PREPAYMENT" },
     paymentOutcome: PaymentOutcome.AUTHORIZED,
@@ -57,20 +71,9 @@ async mount(selector: string) {
     const data = await response.json();
     console.log("responseData-newdata", data);
 
-    // you can store preload data for submit()
     this.preloadData = data;
   } catch (err) {
     console.error("Error while preloading payment data", err);
-  }
-
-  // bind button handler
-  if (this.showPayButton) {
-    document
-      .querySelector("#purchaseOrderForm-paymentButton")
-      .addEventListener("click", (e) => {
-        e.preventDefault();
-        this.submit();
-      });
   }
 }
 
