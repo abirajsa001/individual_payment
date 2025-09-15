@@ -35,25 +35,26 @@ export class Prepayment extends BaseComponent {
       .querySelector(selector)
       .insertAdjacentHTML("afterbegin", this._getTemplate());
 
-
-  const requestData: PaymentRequestSchemaDTO = {
-    paymentMethod: { type: "PREPAYMENT" },
-    paymentOutcome: PaymentOutcome.AUTHORIZED,
-  };
-
-  console.log("requestData", requestData);
-
-  const response = await fetch(this.processorUrl + "/v13", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Session-Id": this.sessionId,
-    },
-    body: 'test',
-  });
+      // optional: load data from processor
+      try {
+        const response = await fetch(this.processorUrl + "/v13", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Session-Id": this.sessionId,
+          },
+          body: JSON.stringify({ init: true }),
+        });
+        const data = await response.json();
+        console.log("preload data", data);
+    
+        // You can store it in a property for later use in submit()
+        this.preloadData = data;
+      } catch (e) {
+        console.error("Error during preload", e);
+      }
 
   console.log("responseData-newdata", response);
-
 
    
     if (this.showPayButton) {
