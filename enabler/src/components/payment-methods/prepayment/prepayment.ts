@@ -25,6 +25,8 @@ export class PrepaymentBuilder implements PaymentComponentBuilder {
 export class Prepayment extends BaseComponent {
   private showPayButton: boolean;
   private preloadData: unknown;
+  private buttonEl?: HTMLButtonElement;
+  private container?: Element;
 
   constructor(baseOptions: BaseOptions, componentOptions: ComponentOptions) {
     super(PaymentMethod.prepayment, baseOptions, componentOptions);
@@ -33,27 +35,31 @@ export class Prepayment extends BaseComponent {
 
   mount(selector: string): void {
     // render template safely
-    const container = document.querySelector(selector);
-    if (container) {
-      container.insertAdjacentHTML('afterbegin', this._getTemplate());
-    } else {
+    this.container = document.querySelector(selector);
+    if (!this.container) {
       console.error(`Mount failed: container ${selector} not found`);
       return;
     }
+
+    this.container.insertAdjacentHTML('afterbegin', this._getTemplate());
 
     // preload request in background
     this._preload();
 
     // bind button handler
     if (this.showPayButton) {
-      document
-        .querySelector('#purchaseOrderForm-paymentButton')
-        ?.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.submit();
-        });
+      this.buttonEl = this.container.querySelector(
+        '#purchaseOrderForm-paymentButton'
+      ) as HTMLButtonElement | null;
+
+      this.buttonEl?.addEventListener('click', this._onPayClick);
     }
   }
+
+  private _onPayClick = (e: Event) => {
+    e.preventDefault();
+    this.submit();
+  };
 
   private async _preload(): Promise<void> {
     const requestData: PaymentRequestSchemaDTO = {
@@ -137,5 +143,16 @@ export class Prepayment extends BaseComponent {
       </div>
     `
       : '';
+  }
+
+  destroy(): void {
+    if (this.buttonEl) {
+      this.buttonEl.removeEventListener('click', this._onPayClick);
+      this.buttonEl = undefined;
+    }
+    if (this.container) {
+      this.container.innerHTML = '';
+      this.container = undefined;
+    }
   }
 }
