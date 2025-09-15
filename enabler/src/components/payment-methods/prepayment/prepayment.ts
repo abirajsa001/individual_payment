@@ -34,7 +34,12 @@ export class Prepayment extends BaseComponent {
   }
 
   mount(selector: string): void {
-    // render template safely
+    // SSR-safe: check DOM
+    if (typeof document === 'undefined') {
+      console.warn('Mount skipped: no DOM available (SSR environment)');
+      return;
+    }
+
     this.container = document.querySelector(selector);
     if (!this.container) {
       console.error(`Mount failed: container ${selector} not found`);
@@ -43,8 +48,8 @@ export class Prepayment extends BaseComponent {
 
     this.container.insertAdjacentHTML('afterbegin', this._getTemplate());
 
-    // preload request in background
-    this._preload();
+    // preload in background (ignore promise)
+    void this._preload();
 
     // bind button handler
     if (this.showPayButton) {
