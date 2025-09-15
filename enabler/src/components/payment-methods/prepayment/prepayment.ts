@@ -24,7 +24,7 @@ export class PrepaymentBuilder implements PaymentComponentBuilder {
 
 export class Prepayment extends BaseComponent {
   private showPayButton: boolean;
-  private preloadData: unknown;
+  private preloadData?: unknown;
   private buttonEl?: HTMLButtonElement;
   private container?: Element;
 
@@ -34,36 +34,39 @@ export class Prepayment extends BaseComponent {
   }
 
   mount(selector: string): void {
-    // SSR-safe: check DOM
+    // Guard against SSR / Node
     if (typeof document === 'undefined') {
-      console.warn('Mount skipped: no DOM available (SSR environment)');
       return;
     }
 
     this.container = document.querySelector(selector);
     if (!this.container) {
-      console.error(`Mount failed: container ${selector} not found`);
       return;
     }
 
     this.container.insertAdjacentHTML('afterbegin', this._getTemplate());
 
-    // preload in background (ignore promise)
-    void this._preload();
+    // preload async
+    this._preload().catch((err) => {
+      console.error('Preload failed', err);
+    });
 
-    // bind button handler
     if (this.showPayButton) {
       this.buttonEl = this.container.querySelector(
         '#purchaseOrderForm-paymentButton'
       ) as HTMLButtonElement | null;
 
-      this.buttonEl?.addEventListener('click', this._onPayClick);
+      if (this.buttonEl) {
+        this.buttonEl.addEventListener('click', this._onPayClick);
+      }
     }
   }
 
   private _onPayClick = (e: Event) => {
     e.preventDefault();
-    this.submit();
+    this.submit().catch((err) => {
+      this.onError(`Submit failed: ${(err as Error).message}`);
+    });
   };
 
   private async _preload(): Promise<void> {
@@ -72,11 +75,8 @@ export class Prepayment extends BaseComponent {
       paymentOutcome: PaymentOutcome.AUTHORIZED,
     };
 
-    console.log('requestData (preload)', requestData);
-
     try {
       const data = await this._doRequest('/v13', requestData);
-      console.log('responseData-newdata (preload)', data);
       this.preloadData = data;
     } catch (err) {
       console.error('Error while preloading payment data', err);
@@ -85,18 +85,14 @@ export class Prepayment extends BaseComponent {
 
   async submit(): Promise<void> {
     this.sdk.init({ environment: this.environment });
-    console.log('submit-triggered');
 
     const requestData: PaymentRequestSchemaDTO = {
       paymentMethod: { type: 'PREPAYMENT' },
       paymentOutcome: PaymentOutcome.AUTHORIZED,
     };
 
-    console.log('requestData (submit)', requestData);
-
     try {
       const data = await this._doRequest('/payment', requestData);
-      console.log('responseData-newdata (submit)', data);
 
       if (data?.paymentReference) {
         this.onComplete?.({
