@@ -1,5 +1,3 @@
-import 'https://cdn.novalnet.de/js/pv13/checkout.js';
-
 const v13PaymentForm = new NovalnetPaymentForm();
 
 v13PaymentForm.getPayment(
