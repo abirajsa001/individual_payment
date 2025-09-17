@@ -17,6 +17,9 @@ import { BaseOptions } from '../../../payment-enabler/payment-enabler-mock';
 // declare NovalnetPaymentForm global
 declare class NovalnetPaymentForm {
   initiate(config: Record<string, unknown>): void;
+  getPayment(callback: (data: any) => void): void;
+  walletResponse(config: { onProcessCompletion: (response: any) => Promise<any> }): void;
+  selectedPayment(callback: (data: any) => void): void;
 }
 
 export class PrepaymentBuilder implements PaymentComponentBuilder {
@@ -100,12 +103,12 @@ private async _initIframe(redirectUrl: string) {
 
   const v13PaymentForm = new NovalnetPaymentForm();
   v13PaymentForm.initiate({
-    iframe: `#${this.iframeId}`,
-    initForm: {
-      orderInformation: {},
-      setWalletPending: true,
-      showButton: true,
-    },
+      iframe: `#${this.iframeId}`,
+      initForm: {
+        orderInformation: {},
+        setWalletPending: true,
+        showButton: true,
+      },
   });
 
   v13PaymentForm.getPayment((data) => {
@@ -118,18 +121,6 @@ private async _initIframe(redirectUrl: string) {
     }
   });
 
-  v13PaymentForm.walletResponse({
-    onProcessCompletion: async (response) => {
-      if (
-        response.result.status === 'FAILURE' ||
-        response.result.status === 'ERROR'
-      ) {
-        return { status: 'FAILURE', statusText: 'failure' };
-      } else {
-        return { status: 'SUCCESS', statusText: 'successful' };
-      }
-    },
-  });
 
   v13PaymentForm.selectedPayment((data) => {
     console.log('selected-payment', data);
