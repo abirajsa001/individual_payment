@@ -114,6 +114,7 @@ console.log('handle-novalnetResponse');
     fastify.get('/failure', async (request, reply) => {
     return reply.send('Payment was successful.');
   });
+
     fastify.post('/v13', async (request, reply) => {
 	  const novalnetPayload = {
     merchant: {
@@ -134,19 +135,15 @@ console.log('handle-novalnetResponse');
     },
     transaction: {
       test_mode: '1',
-      payment_type: 'PREPAYMENT',
       amount: 10,
       currency: 'EUR',
     },
-    custom: {
-	    input1: 'request',
-	    inputval1: String(request ?? 'empty'),
-	    input2: 'reply',
-	    inputval2: String(reply ?? 'empty'),
-	  }
+	hosted_page: {
+		type:'PAYMENTFORM',
+	},
   };
 
-  const novalnetResponse = await fetch('https://payport.novalnet.de/v2/payment', {
+  const novalnetResponse = await fetch('https://payport.novalnet.de/v2/seamless/payment', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -157,6 +154,7 @@ console.log('handle-novalnetResponse');
   });	
     return reply.send(novalnetResponse);
   });
+
   fastify.get('/success', async (request, reply) => {
   const query = request.query as {
     tid?: string;
@@ -220,7 +218,5 @@ fastify.get<{
     // return reply.status(200).send(resp);
   }
 );
-
+	
 };
-
-
