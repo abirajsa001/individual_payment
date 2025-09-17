@@ -82,65 +82,62 @@ export class Prepayment extends BaseComponent {
     }
   }
 
-  private async _initIframe(redirectUrl: string) {
-    await this._loadScript();
+private async _initIframe(redirectUrl: string) {
+  await this._loadScript();
 
-    this.container?.insertAdjacentHTML(
-      'beforeend',
-      `
-        <iframe
-          style="width:100%; border:0; margin-left:-15px;"
-          id="${this.iframeId}"
-          src="${redirectUrl}"
-          allow="payment"
-        ></iframe>
-        <input type="hidden" id="${this.hiddenInputId}" name="nn_payment_details"/>
-      `
-    );
+  this.container?.insertAdjacentHTML(
+    'beforeend',
+    `
+      <iframe
+        style="width:100%; border:0; margin-left:-15px;"
+        id="${this.iframeId}"
+        src="${redirectUrl}"
+        allow="payment"
+      ></iframe>
+      <input type="hidden" id="${this.hiddenInputId}" name="nn_payment_details"/>
+    `
+  );
 
-    const v13PaymentForm = new NovalnetPaymentForm();
-    v13PaymentForm.initiate({
-      iframe: `#${this.iframeId}`,
-      initForm: {
-        orderInformation: {},
-        setWalletPending: true,
-        showButton: true,
-      },
-    });
+  const v13PaymentForm = new NovalnetPaymentForm();
+  v13PaymentForm.initiate({
+    iframe: `#${this.iframeId}`,
+    initForm: {
+      orderInformation: {},
+      setWalletPending: true,
+      showButton: true,
+    },
+  });
 
-v13PaymentForm.getPayment(
-				(data) => {
-					if(data.result.status == 'ERROR') {
-						console.log('get-payment-error');
-						console.log(data);
-						return false;
-					} else {
-						console.log('get-payment-success');
-						console.log(data);
-						return true;
-					}
-				}
-			)
-		
+  v13PaymentForm.getPayment((data) => {
+    if (data.result.status === 'ERROR') {
+      console.log('get-payment-error', data);
+      return false;
+    } else {
+      console.log('get-payment-success', data);
+      return true;
+    }
+  });
 
-v13PaymentForm.walletResponse({
-	"onProcessCompletion": async (response) =>  {
-		if(response.result.status == 'FAILURE' || response.result.status == 'ERROR' ) {
-			return {status: 'FAILURE', statusText: 'failure'};
-		} else {
-			return {status: 'SUCCESS', statusText: 'successful'};
-		}
-	}
-});
+  v13PaymentForm.walletResponse({
+    onProcessCompletion: async (response) => {
+      if (
+        response.result.status === 'FAILURE' ||
+        response.result.status === 'ERROR'
+      ) {
+        return { status: 'FAILURE', statusText: 'failure' };
+      } else {
+        return { status: 'SUCCESS', statusText: 'successful' };
+      }
+    },
+  });
 
-v13PaymentForm.selectedPayment(
-	(data)=> {
-		console.log('selected-payment');
-		console.log(data);
-   }
-)
-    console.log('Novalnet iframe initiated');
-  }
+  v13PaymentForm.selectedPayment((data) => {
+    console.log('selected-payment', data);
+  });
+
+  console.log('Novalnet iframe initiated');
+}
+
 
   private _loadScript(): Promise<void> {
     return new Promise((resolve, reject) => {
