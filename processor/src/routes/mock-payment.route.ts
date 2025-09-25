@@ -111,10 +111,15 @@ console.log('handle-novalnetResponse');
 
     },
   );
-    fastify.get('/failure', async (request, reply) => {
+	
+  fastify.get('/failure', async (request, reply) => {
     return reply.send('Payment was successful.');
   });
 
+   fastify.post('/webhook', async (request, reply) => {
+    return reply.send('Payment was successful.');
+  });
+	
     fastify.post('/v13', async (request, reply) => {
 	  const novalnetPayload = {
     merchant: {
