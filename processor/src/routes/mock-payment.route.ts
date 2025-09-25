@@ -116,8 +116,9 @@ console.log('handle-novalnetResponse');
     return reply.send('Payment was successful.');
   });
 
-   fastify.post('/webhook', async (request, reply) => {
-    return reply.send(request);
+   fastify.post('/webhook', async (req: FastifyRequest, reply: FastifyReply) => {
+	const body = req.body as EventData;
+    return reply.send(body);
   });
 	
     fastify.post('/v13', async (request, reply) => {
